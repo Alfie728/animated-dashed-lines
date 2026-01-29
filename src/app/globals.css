@@ -5,22 +5,22 @@
   --foreground: #171717;
 
   /* Animated dashed lines */
-  --line-primary: #6AE300;
-  --line-primary-glow: #9FFF57;
-  --line-muted: #CDCDCD;
-  --line-muted-glow: #6E6E6E;
+  --line-primary: #6ae300;
+  --line-primary-glow: #d4ff9f;
+  --line-muted: #cdcdcd;
+  --line-muted-glow: #6e6e6e;
 
   /* Indicator dots */
-  --indicator-bg: #EEEEEE;
-  --indicator-dot: #6AE300;
+  --indicator-bg: #eeeeee;
+  --indicator-dot: #6ae300;
 
   /* Cards */
-  --card-bg: #FDFDFD;
-  --card-border: #E4E4E4;
+  --card-bg: #fdfdfd;
+  --card-border: #e4e4e4;
   --card-stripe: rgba(205, 205, 205, 0.2);
 
   /* Icons */
-  --icon-fill: #3F3F3F;
+  --icon-fill: #3f3f3f;
 }
 
 @theme inline {
@@ -35,15 +35,15 @@
     --background: #0a0a0a;
     --foreground: #ededed;
 
-    --line-primary: #6AE300;
-    --line-primary-glow: #9FFF57;
-    --line-muted: #3F3F3F;
-    --line-muted-glow: #6E6E6E;
+    --line-primary: #6ae300;
+    --line-primary-glow: #6e6e6e;
+    --line-muted: #3f3f3f;
+    --line-muted-glow: #6e6e6e;
 
-    --indicator-bg: #3C3C3C;
-    --indicator-dot: #6AE300;
+    --indicator-bg: #3c3c3c;
+    --indicator-dot: #6ae300;
 
-    --card-bg: #1F2020;
+    --card-bg: #1f2020;
     --card-border: #343434;
     --card-stripe: rgba(52, 52, 52, 0.7);
 

@@ -20,6 +20,8 @@ interface AnimatedDashedLineProps {
   glowDuration?: number;
   /** Delay before glow animation starts */
   glowDelay?: number;
+  /** Pause between each glow repeat cycle */
+  glowRepeatDelay?: number;
   /** Direction of the dash crawl and glow travel ("forward" = start→end, "reverse" = end→start) */
   direction?: "forward" | "reverse";
 }
@@ -34,6 +36,7 @@ export function AnimatedDashedLine({
   dashDuration = 0.5,
   glowDuration = 5,
   glowDelay = 0,
+  glowRepeatDelay,
   direction = "forward",
 }: AnimatedDashedLineProps) {
   const maskId = useId();
@@ -104,6 +107,7 @@ export function AnimatedDashedLine({
               ease: "linear",
               repeat: Number.POSITIVE_INFINITY,
               delay: glowDelay,
+              repeatDelay: glowRepeatDelay,
             }}
           />
         </mask>

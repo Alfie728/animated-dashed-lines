@@ -20,6 +20,8 @@ interface AnimatedDashedLineProps {
   glowDuration?: number;
   /** Delay before glow animation starts */
   glowDelay?: number;
+  /** Direction of the dash crawl and glow travel ("forward" = start→end, "reverse" = end→start) */
+  direction?: "forward" | "reverse";
 }
 
 export function AnimatedDashedLine({
@@ -29,11 +31,13 @@ export function AnimatedDashedLine({
   dashSize = 3,
   glowSize = 5,
   strokeWidth = 0.5,
-  dashDuration = 1.5,
+  dashDuration = 0.5,
   glowDuration = 5,
   glowDelay = 0,
+  direction = "forward",
 }: AnimatedDashedLineProps) {
   const maskId = useId();
+  const reverse = direction === "reverse";
 
   const dashArray = `${dashSize} ${dashSize}`;
   const dashCrawlDistance = dashSize * 2;
@@ -50,7 +54,11 @@ export function AnimatedDashedLine({
         strokeLinecap="round"
         strokeLinejoin="bevel"
         strokeDasharray={dashArray}
-        animate={{ strokeDashoffset: [0, -dashCrawlDistance] }}
+        animate={{
+          strokeDashoffset: reverse
+            ? [0, dashCrawlDistance]
+            : [0, -dashCrawlDistance],
+        }}
         transition={{
           duration: dashDuration,
           ease: "linear",
@@ -67,7 +75,11 @@ export function AnimatedDashedLine({
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeDasharray={dashArray}
-        animate={{ strokeDashoffset: [0, -dashCrawlDistance] }}
+        animate={{
+          strokeDashoffset: reverse
+            ? [0, dashCrawlDistance]
+            : [0, -dashCrawlDistance],
+        }}
         transition={{
           duration: dashDuration,
           ease: "linear",
@@ -77,10 +89,6 @@ export function AnimatedDashedLine({
 
       <defs>
         <mask id={maskId} maskUnits="userSpaceOnUse">
-          {/*
-            Offset goes from glowSize (segment fully before the path
-            start) to -100 (segment fully past the path end).
-          */}
           <motion.path
             d={d}
             pathLength={100}
@@ -89,7 +97,7 @@ export function AnimatedDashedLine({
             strokeWidth={strokeWidth + 1}
             strokeDasharray={glowDashArray}
             animate={{
-              strokeDashoffset: [glowSize, -100],
+              strokeDashoffset: reverse ? [-glowSize, 100] : [glowSize, -100],
             }}
             transition={{
               duration: glowDuration,

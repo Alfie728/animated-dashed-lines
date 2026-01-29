@@ -7,15 +7,11 @@ type LineVariant = "primary" | "muted";
 interface LineConfig {
   d: string;
   variant: LineVariant;
-  pathLength: number;
   glowDuration: number;
   glowDelay: number;
 }
 
-const VARIANT_COLORS: Record<
-  LineVariant,
-  { stroke: string; glow: string }
-> = {
+const VARIANT_COLORS: Record<LineVariant, { stroke: string; glow: string }> = {
   primary: {
     stroke: "var(--line-primary)",
     glow: "var(--line-primary-glow)",
@@ -30,42 +26,42 @@ const lines: LineConfig[] = [
   {
     d: "M0 65.5H48.3468C50.53 65.5 52.6868 65.0235 54.6667 64.1037L70.1808 56.8963C72.1607 55.9765 74.3175 55.5 76.5006 55.5H127H281.467C284.109 55.5 286.704 56.1978 288.99 57.5229L316.51 73.4771C318.796 74.8022 321.391 75.5 324.033 75.5H400",
     variant: "muted",
-    pathLength: 450,
+
     glowDuration: 6,
     glowDelay: 0,
   },
   {
     d: "M0 72.5H48.3468C50.53 72.5 52.6868 72.0235 54.6667 71.1037L70.1808 63.8963C72.1607 62.9765 74.3175 62.5 76.5006 62.5H127H281.915C284.59 62.5 287.216 63.215 289.521 64.571L316.479 80.429C318.784 81.785 321.41 82.5 324.085 82.5H400",
     variant: "primary",
-    pathLength: 450,
+
     glowDuration: 5,
     glowDelay: 1,
   },
   {
     d: "M0 79.5H48.3468C50.53 79.5 52.6868 79.0235 54.6667 78.1037L70.1808 70.8963C72.1607 69.9765 74.3175 69.5 76.5006 69.5H127H224",
     variant: "muted",
-    pathLength: 280,
+
     glowDuration: 4,
     glowDelay: 2,
   },
   {
     d: "M0 13.5H78.9175C81.9931 13.5 84.9943 14.4454 87.5145 16.2081L96.928 22.7919C99.4483 24.5546 102.449 25.5 105.525 25.5H126",
     variant: "primary",
-    pathLength: 150,
+
     glowDuration: 3,
     glowDelay: 0.5,
   },
   {
     d: "M0 21.5H78.9175C81.9931 21.5 84.9943 22.4454 87.5145 24.2081L96.928 30.7919C99.4483 32.5546 102.45 33.5 105.525 33.5H126H237.87C239.934 33.5 241.977 33.0738 243.869 32.2481L265.631 22.7519C267.523 21.9262 269.566 21.5 271.63 21.5H399.5",
     variant: "muted",
-    pathLength: 450,
+
     glowDuration: 7,
     glowDelay: 1.5,
   },
   {
     d: "M103 40H126.5",
     variant: "muted",
-    pathLength: 30,
+
     glowDuration: 2,
     glowDelay: 3,
   },
@@ -77,11 +73,7 @@ export function DashedLinesScene() {
       aria-hidden="true"
       className="relative isolate flex h-full w-full items-center justify-center overflow-hidden pointer-events-none select-none"
     >
-      <svg
-        viewBox="0 0 400 94"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg viewBox="0 0 400 94" fill="none" xmlns="http://www.w3.org/2000/svg">
         {lines.map((line, i) => {
           const colors = VARIANT_COLORS[line.variant];
           return (
@@ -90,7 +82,6 @@ export function DashedLinesScene() {
               d={line.d}
               strokeColor={colors.stroke}
               glowColor={colors.glow}
-              pathLength={line.pathLength}
               glowDuration={line.glowDuration}
               glowDelay={line.glowDelay}
             />

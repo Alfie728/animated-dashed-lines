@@ -9,13 +9,11 @@ interface AnimatedDashedLineProps {
   strokeColor: string;
   /** Stroke color for the glow overlay segment */
   glowColor: string;
-  /** Dash pattern, e.g. "3 3" */
-  dashArray?: string;
-  /** Glow segment visible length vs gap, e.g. "15 1000" */
-  glowDashArray?: string;
+  /** Dash and gap size in SVG units (default: 3) */
+  dashSize?: number;
+  /** Glow segment size as a percentage of path length */
+  glowSize?: number;
   strokeWidth?: number;
-  /** Total approximate path length for glow animation range */
-  pathLength?: number;
   /** Duration in seconds for the base dash crawl animation */
   dashDuration?: number;
   /** Duration in seconds for the glow to traverse the path */
@@ -28,20 +26,18 @@ export function AnimatedDashedLine({
   d,
   strokeColor,
   glowColor,
-  dashArray = "3 3",
-  glowDashArray = "15 1000",
+  dashSize = 3,
+  glowSize = 5,
   strokeWidth = 0.5,
-  pathLength = 500,
   dashDuration = 1.5,
   glowDuration = 5,
   glowDelay = 0,
 }: AnimatedDashedLineProps) {
   const maskId = useId();
 
-  // dash crawl distance = sum of dash + gap so the pattern loops seamlessly
-  const dashCrawlDistance = dashArray
-    .split(" ")
-    .reduce((sum, v) => sum + Number(v), 0);
+  const dashArray = `${dashSize} ${dashSize}`;
+  const dashCrawlDistance = dashSize * 2;
+  const glowDashArray = `${glowSize} ${100}`;
 
   return (
     <>
@@ -81,14 +77,19 @@ export function AnimatedDashedLine({
 
       <defs>
         <mask id={maskId} maskUnits="userSpaceOnUse">
+          {/*
+            Offset goes from glowSize (segment fully before the path
+            start) to -100 (segment fully past the path end).
+          */}
           <motion.path
             d={d}
+            pathLength={100}
             fill="none"
             stroke="#fff"
-            strokeWidth={strokeWidth}
+            strokeWidth={strokeWidth + 1}
             strokeDasharray={glowDashArray}
             animate={{
-              strokeDashoffset: [pathLength, -pathLength],
+              strokeDashoffset: [glowSize, -100],
             }}
             transition={{
               duration: glowDuration,

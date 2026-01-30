@@ -1,7 +1,14 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useId } from "react";
+import { useId, useMemo } from "react";
+
+function getPathLength(d: string): number {
+  if (typeof document === "undefined") return 0;
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", d);
+  return path.getTotalLength();
+}
 
 interface AnimatedDashedLineProps {
   d: string;
@@ -11,15 +18,13 @@ interface AnimatedDashedLineProps {
   glowColor: string;
   /** Dash and gap size in SVG units (default: 3) */
   dashSize?: number;
-  /** Glow segment size as a percentage of path length */
+  /** Glow segment size in SVG units (default: 20) */
   glowSize?: number;
   strokeWidth?: number;
-  /** Duration in seconds for the base dash crawl animation */
-  dashDuration?: number;
-  /** Duration in seconds for the glow to traverse the path */
-  glowDuration?: number;
-  /** Delay before glow animation starts */
-  glowDelay?: number;
+  /** Base dash crawl speed in SVG units per second (default: 20) */
+  dashSpeed?: number;
+  /** Glow travel speed in SVG units per second (default: 80) */
+  glowSpeed?: number;
   /** Pause between each glow repeat cycle */
   glowRepeatDelay?: number;
   /** Direction of the dash crawl and glow travel ("forward" = start→end, "reverse" = end→start) */
@@ -31,20 +36,24 @@ export function AnimatedDashedLine({
   strokeColor,
   glowColor,
   dashSize = 3,
-  glowSize = 5,
+  glowSize = 20,
   strokeWidth = 0.5,
-  dashDuration = 0.5,
-  glowDuration = 5,
-  glowDelay = 0,
+  dashSpeed = 20,
+  glowSpeed = 80,
   glowRepeatDelay,
   direction = "forward",
 }: AnimatedDashedLineProps) {
   const maskId = useId();
   const reverse = direction === "reverse";
+  const pathLength = useMemo(() => getPathLength(d), [d]);
 
   const dashArray = `${dashSize} ${dashSize}`;
   const dashCrawlDistance = dashSize * 2;
-  const glowDashArray = `${glowSize} ${100}`;
+  const glowDashArray = `${glowSize} ${pathLength + glowSize}`;
+
+  // Derive durations from speed and distance
+  const dashDuration = dashCrawlDistance / dashSpeed;
+  const glowDuration = (pathLength + glowSize) / glowSpeed;
 
   return (
     <>
@@ -90,28 +99,30 @@ export function AnimatedDashedLine({
         }}
       />
 
-      <defs>
-        <mask id={maskId} maskUnits="userSpaceOnUse">
-          <motion.path
-            d={d}
-            pathLength={100}
-            fill="none"
-            stroke="#fff"
-            strokeWidth={strokeWidth + 1}
-            strokeDasharray={glowDashArray}
-            animate={{
-              strokeDashoffset: reverse ? [-glowSize, 100] : [glowSize, -100],
-            }}
-            transition={{
-              duration: glowDuration,
-              ease: "linear",
-              repeat: Number.POSITIVE_INFINITY,
-              delay: glowDelay,
-              repeatDelay: glowRepeatDelay,
-            }}
-          />
-        </mask>
-      </defs>
+      {pathLength > 0 && (
+        <defs>
+          <mask id={maskId} maskUnits="userSpaceOnUse">
+            <motion.path
+              d={d}
+              fill="none"
+              stroke="#fff"
+              strokeWidth={strokeWidth + 1}
+              strokeDasharray={glowDashArray}
+              animate={{
+                strokeDashoffset: reverse
+                  ? [-glowSize, pathLength]
+                  : [glowSize, -pathLength],
+              }}
+              transition={{
+                duration: glowDuration,
+                ease: "linear",
+                repeat: Number.POSITIVE_INFINITY,
+                repeatDelay: glowRepeatDelay,
+              }}
+            />
+          </mask>
+        </defs>
+      )}
     </>
   );
 }

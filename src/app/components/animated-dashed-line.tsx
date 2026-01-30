@@ -110,8 +110,8 @@ export function AnimatedDashedLine({
               strokeDasharray={glowDashArray}
               animate={{
                 strokeDashoffset: reverse
-                  ? [-glowSize, pathLength]
-                  : [glowSize, -pathLength],
+                  ? [-(pathLength + glowSize), glowSize]
+                  : [glowSize, -(pathLength + glowSize)],
               }}
               transition={{
                 duration: glowDuration,

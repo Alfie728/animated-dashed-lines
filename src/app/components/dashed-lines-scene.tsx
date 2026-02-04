@@ -10,6 +10,7 @@ interface LineConfig {
   dashSpeed?: number;
   glowSize?: number;
   glowSpeed?: number;
+  glowDelay?: number;
   glowRepeatDelay?: number;
   direction?: "forward" | "reverse";
 }
@@ -31,6 +32,7 @@ const lines: LineConfig[] = [
     variant: "primary",
     dashSpeed: 25,
     glowSpeed: 100,
+    glowDelay: 0,
     glowRepeatDelay: 3,
   },
   {
@@ -38,6 +40,7 @@ const lines: LineConfig[] = [
     variant: "muted",
     dashSpeed: 15,
     glowSpeed: 60,
+    glowDelay: 2.5,
     glowRepeatDelay: 5,
     direction: "reverse",
   },
@@ -46,6 +49,7 @@ const lines: LineConfig[] = [
     variant: "muted",
     dashSpeed: 10,
     glowSpeed: 40,
+    glowDelay: 4,
     glowRepeatDelay: 8,
   },
   {
@@ -53,6 +57,7 @@ const lines: LineConfig[] = [
     variant: "muted",
     dashSpeed: 18,
     glowSpeed: 70,
+    glowDelay: 1,
     glowRepeatDelay: 4,
     direction: "reverse",
   },
@@ -61,6 +66,7 @@ const lines: LineConfig[] = [
     variant: "primary",
     dashSpeed: 22,
     glowSpeed: 90,
+    glowDelay: 0.5,
     glowRepeatDelay: 2,
   },
   {
@@ -68,6 +74,7 @@ const lines: LineConfig[] = [
     variant: "muted",
     dashSpeed: 12,
     glowSpeed: 50,
+    glowDelay: 3.5,
     glowRepeatDelay: 6,
     direction: "reverse",
   },
@@ -91,6 +98,7 @@ export function DashedLinesScene() {
               dashSpeed={line.dashSpeed}
               glowSize={line.glowSize}
               glowSpeed={line.glowSpeed}
+              glowDelay={line.glowDelay}
               glowRepeatDelay={line.glowRepeatDelay}
               direction={line.direction}
             />

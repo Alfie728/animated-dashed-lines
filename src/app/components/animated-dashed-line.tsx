@@ -25,6 +25,8 @@ interface AnimatedDashedLineProps {
   dashSpeed?: number;
   /** Glow travel speed in SVG units per second (default: 80) */
   glowSpeed?: number;
+  /** Initial delay before the first glow animation */
+  glowDelay?: number;
   /** Pause between each glow repeat cycle */
   glowRepeatDelay?: number;
   /** Direction of the dash crawl and glow travel ("forward" = start→end, "reverse" = end→start) */
@@ -40,6 +42,7 @@ export function AnimatedDashedLine({
   strokeWidth = 0.5,
   dashSpeed = 20,
   glowSpeed = 80,
+  glowDelay = 0,
   glowRepeatDelay,
   direction = "forward",
 }: AnimatedDashedLineProps) {
@@ -117,6 +120,7 @@ export function AnimatedDashedLine({
                 duration: glowDuration,
                 ease: "linear",
                 repeat: Number.POSITIVE_INFINITY,
+                delay: glowDelay,
                 repeatDelay: glowRepeatDelay,
               }}
             />
